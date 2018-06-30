@@ -28,7 +28,9 @@ namespace pi {
             auto operator=(ObjRef&&) = delete;
 
             ObjRef(const ObjRef& rhs) : _repo(rhs._repo), _objId(rhs._objId) {
-                _repo.incRef(_objId);
+                if (_objId != 0) {
+                    _repo.incRef(_objId);
+                }
             }
 
             ObjRef(ObjRef&& rhs) : _repo(rhs._repo), _objId(rhs._objId) {
@@ -94,10 +96,10 @@ namespace pi {
 
         template<typename... Args>
         ObjRef createObject(Args&&... args) {
-            if (auto [it, r] = _repo.try_emplace(GetNextObjectId(), std::piecewise_construct, std::forward_as_tuple(args...), std::make_tuple(1)); r) {
+            if (auto [it, r] = _repo.try_emplace(getNextObjectId(), std::piecewise_construct, std::forward_as_tuple(args...), std::make_tuple(1)); r) {
                 return ObjRef{*this, it->first};
             }
-            return ObjRef{*this};
+            throw -1;
         }
 
         constexpr const ObjRef& getInvalid() const {
@@ -105,7 +107,7 @@ namespace pi {
         }
 
     private:
-        ObjRef _invalid{*this};
+        const ObjRef _invalid{*this};
 
         bool hasObject(uint64_t objId) {
             return _repo.count(objId) > 0;
@@ -132,9 +134,12 @@ namespace pi {
             }
         }
 
-        static uint64_t GetNextObjectId() {
-            static uint64_t s_id = 0;
-            return ++s_id;
+        uint64_t _nextId = 0;
+        uint64_t getNextObjectId() {
+            if (++_nextId == 0) {
+                throw -1;
+            }
+            return _nextId;
         }
 
         std::unordered_map<uint64_t, std::pair<T, size_t>> _repo;
