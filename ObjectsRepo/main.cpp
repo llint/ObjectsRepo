@@ -22,6 +22,9 @@ void Test_Int() {
     auto objr3 = objr;
     objr.release();
     assert(!objr);
+    assert(objr3);
+    auto objr4 = std::move(objr3);
+    assert(!objr3);
 }
 
 struct S {
@@ -42,6 +45,10 @@ struct S {
 void Test_Struct() {
     auto objr = pi::ObjectsRepository<S>::Singleton().createObject();
     auto objr2 = pi::ObjectsRepository<S>::Singleton().createObject(33, "world");
+
+    std::vector<S::ObjRef> vors;
+    vors.push_back(objr);
+    vors.push_back(objr2);
 }
 
 int main(int argc, const char * argv[]) {

@@ -24,6 +24,9 @@ namespace pi {
             friend class ObjectsRepository;
 
         public:
+            auto operator=(const ObjRef&) = delete;
+            auto operator=(ObjRef&&) = delete;
+
             ObjRef(const ObjRef& rhs) : _repo(rhs._repo), _objId(rhs._objId) {
                 _repo.incRef(_objId);
             }
