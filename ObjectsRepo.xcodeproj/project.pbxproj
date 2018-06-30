@@ -25,6 +25,7 @@
 /* Begin PBXFileReference section */
 		3E54A90B20E73D1400BD7129 /* ObjectsRepo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ObjectsRepo; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E54A90E20E73D1400BD7129 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		3E54A91520E73D4400BD7129 /* ObjectsRepository.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectsRepository.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +59,7 @@
 			isa = PBXGroup;
 			children = (
 				3E54A90E20E73D1400BD7129 /* main.cpp */,
+				3E54A91520E73D4400BD7129 /* ObjectsRepository.h */,
 			);
 			path = ObjectsRepo;
 			sourceTree = "<group>";
@@ -237,6 +239,7 @@
 		3E54A91320E73D1400BD7129 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G98G99G5UW;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -246,6 +249,7 @@
 		3E54A91420E73D1400BD7129 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G98G99G5UW;
 				PRODUCT_NAME = "$(TARGET_NAME)";
