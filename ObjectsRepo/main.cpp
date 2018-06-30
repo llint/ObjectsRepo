@@ -14,6 +14,16 @@
 
 #include "ObjectsRepository.h"
 
+void Test_Int() {
+    auto objr = pi::ObjectsRepository<int>::Singleton().createObject(42);
+    auto objr2 = pi::ObjectsRepository<int>::Singleton().createObject(*objr);
+    *objr = 84;
+    assert(*objr2 == 42);
+    auto objr3 = objr;
+    objr.release();
+    assert(!objr);
+}
+
 struct S {
     using ObjRef = pi::ObjectsRepository<S>::ObjRef;
 
@@ -28,16 +38,6 @@ struct S {
     S(const S&) = delete;
     S(S&&) = delete;
 };
-
-void Test_Int() {
-    auto objr = pi::ObjectsRepository<int>::Singleton().createObject(42);
-    auto objr2 = pi::ObjectsRepository<int>::Singleton().createObject(*objr);
-    *objr = 84;
-    assert(*objr2 == 42);
-    auto objr3 = objr;
-    objr.release();
-    assert(!objr);
-}
 
 void Test_Struct() {
     auto objr = pi::ObjectsRepository<S>::Singleton().createObject();

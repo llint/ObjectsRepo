@@ -47,35 +47,35 @@ namespace pi {
             }
 
             constexpr const T& operator*() const& {
-                return *_repo.getObject(_objId);
+                return _objId != 0 ? *_repo.getObject(_objId) : *(T*)nullptr;
             }
 
             constexpr T& operator*() & {
-                return *_repo.getObject(_objId);
+                return _objId != 0 ? *_repo.getObject(_objId) : *(T*)nullptr;
             }
 
             constexpr const T* operator->() const& {
-                return _repo.getObject(_objId);
+                return _objId != 0 ? _repo.getObject(_objId) : nullptr;
             }
 
             constexpr T* operator->() & {
-                return _repo.getObject(_objId);
+                return _objId != 0 ? _repo.getObject(_objId) : nullptr;
             }
 
             constexpr const T& operator()() const& {
-                return *_repo.getObject(_objId);
+                return _objId != 0 ? *_repo.getObject(_objId) : *(T*)nullptr;
             }
 
             constexpr T& operator()() & {
-                return *_repo.getObject(_objId);
+                return _objId != 0 ? *_repo.getObject(_objId) : *(T*)nullptr;
             }
 
             explicit constexpr operator const T&() const& {
-                return *_repo.getObject(_objId);
+                return _objId != 0 ? *_repo.getObject(_objId) : *(T*)nullptr;
             }
 
             explicit constexpr operator T&() & {
-                return *_repo.getObject(_objId);
+                return _objId != 0 ? *_repo.getObject(_objId) : *(T*)nullptr;
             }
 
             explicit constexpr operator bool() const noexcept {
