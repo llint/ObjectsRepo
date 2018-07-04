@@ -6,8 +6,8 @@
 //  Copyright © 2018 Linfinity. All rights reserved.
 //
 
-#include <iostream>
 #include <cassert>
+#include <iostream>
 
 #include <string>
 #include <vector>
@@ -15,57 +15,57 @@
 #include "ObjectsRepository.h"
 
 void Test_Int() {
-    auto objr = pi::ObjectsRepository<int>::Singleton().createObject(42);
-    auto objr2 = pi::ObjectsRepository<int>::Singleton().createObject(*objr);
-    *objr = 84;
-    assert(*objr2 == 42);
-    auto objr3 = objr;
-    objr.release();
-    assert(!objr);
-    assert(objr3);
-    auto objr4 = std::move(objr3);
-    assert(!objr3);
+  auto objr = pi::ObjectsRepository<int>::Singleton().createObject(42);
+  auto objr2 = pi::ObjectsRepository<int>::Singleton().createObject(*objr);
+  *objr = 84;
+  assert(*objr2 == 42);
+  auto objr3 = objr;
+  objr.release();
+  assert(!objr);
+  assert(objr3);
+  auto objr4 = std::move(objr3);
+  assert(!objr3);
 }
 
 struct S {
-    using ObjRef = pi::ObjectsRepository<S>::ObjRef;
+  using ObjRef = pi::ObjectsRepository<S>::ObjRef;
 
-    std::vector<ObjRef> vors;
+  std::vector<ObjRef> vors;
 
-    int i = 42;
-    std::string s = "hello";
+  int i = 42;
+  std::string s = "hello";
 
-    S() = default;
-    S(int i, const std::string& s) : i(i), s(s) {}
+  S() = default;
+  S(int i, const std::string &s) : i(i), s(s) {}
 
-    S(const S&) = delete;
-    S(S&&) = delete;
+  S(const S &) = delete;
+  S(S &&) = delete;
 };
 
 void Test_Struct() {
-    auto objr = pi::ObjectsRepository<S>::Singleton().createObject();
-    auto objr2 = pi::ObjectsRepository<S>::Singleton().createObject(33, "world");
+  auto objr = pi::ObjectsRepository<S>::Singleton().createObject();
+  auto objr2 = pi::ObjectsRepository<S>::Singleton().createObject(33, "world");
 
-    std::vector<S::ObjRef> vors;
-    vors.push_back(objr);
-    vors.push_back(objr2);
+  std::vector<S::ObjRef> vors;
+  vors.push_back(objr);
+  vors.push_back(objr2);
 
-    for (size_t i = 0; i < 100; ++i) {
-        auto o = pi::ObjectsRepository<S>::Singleton().createObject();
-        o->vors.push_back(o);
-    }
-
-    pi::ObjectsRepository<S>::Singleton().clear();
-
+  for (size_t i = 0; i < 100; ++i) {
     auto o = pi::ObjectsRepository<S>::Singleton().createObject();
-    o.destroy();
-    o.release();
+    o->vors.push_back(o);
+  }
+
+  pi::ObjectsRepository<S>::Singleton().clear();
+
+  auto o = pi::ObjectsRepository<S>::Singleton().createObject();
+  o.destroy();
+  o.release();
 }
 
-int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
-    Test_Int();
-    Test_Struct();
-    return 0;
+int main(int argc, const char *argv[]) {
+  // insert code here...
+  std::cout << "Hello, World!\n";
+  Test_Int();
+  Test_Struct();
+  return 0;
 }
