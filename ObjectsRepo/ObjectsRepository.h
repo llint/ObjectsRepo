@@ -51,6 +51,13 @@ namespace pi {
                 }
             }
 
+            void destroy() {
+                if (_objId != 0) {
+                    _repo.destroy(_objId);
+                    // intentionally leaving _objId unchanged, making it symmetric to other refs, if any
+                }
+            }
+
             constexpr const T& operator*() const& {
                 return _objId != 0 ? *_repo.getObject(_objId) : *(T*)nullptr;
             }
@@ -106,11 +113,29 @@ namespace pi {
             return _invalid;
         }
 
+        void clear() {
+            clearing = true;
+            _repo.clear();
+            clearing = false;
+        }
+
     private:
+        bool clearing = false;
+
+        ObjectsRepository() = default;
+
+        ~ObjectsRepository() {
+            clear();
+        }
+
         const ObjRef _invalid{*this};
 
         bool hasObject(uint64_t objId) {
             return _repo.count(objId) > 0;
+        }
+
+        void destroy(uint64_t objId) {
+            _repo.erase(objId);
         }
 
         T* getObject(uint64_t objId) {
@@ -127,6 +152,9 @@ namespace pi {
         }
 
         void decRef(uint64_t objId) {
+            if (clearing) {
+                return;
+            }
             if (auto it = _repo.find(objId); it != _repo.end()) {
                 if (--it->second.second <= 0) {
                     _repo.erase(it);

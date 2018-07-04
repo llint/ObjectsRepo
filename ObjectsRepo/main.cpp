@@ -49,6 +49,17 @@ void Test_Struct() {
     std::vector<S::ObjRef> vors;
     vors.push_back(objr);
     vors.push_back(objr2);
+
+    for (size_t i = 0; i < 100; ++i) {
+        auto o = pi::ObjectsRepository<S>::Singleton().createObject();
+        o->vors.push_back(o);
+    }
+
+    pi::ObjectsRepository<S>::Singleton().clear();
+
+    auto o = pi::ObjectsRepository<S>::Singleton().createObject();
+    o.destroy();
+    o.release();
 }
 
 int main(int argc, const char * argv[]) {
